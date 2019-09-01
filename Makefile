@@ -1,14 +1,16 @@
-TARGET = template_cmsis
+PHONY: all clean flash debug
+
+TARGET := template_cmsis
 
 #Toolchain
 #-------------------------------------------------------------------------------
-AS = /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-gcc
-CC = /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-gcc
-LD = /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-g++
-CP = /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-objcopy
-SZ = /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-size
-RM = rm
-CXX = /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-g++
+AS := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-gcc
+CC := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-gcc
+LD := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-g++
+CP := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-objcopy
+SZ := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-size
+RM := rm
+CXX := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-g++
 #GDB = arm-none-eabi-gdb
 #OCD = openocd
 #-------------------------------------------------------------------------------
@@ -27,7 +29,7 @@ CFLAGS += -msoft-float
 
 #startup file
 #-------------------------------------------------------------------------------
-STARTUP = startup_stm32f103xb.s
+STARTUP := startup_stm32f103xb.s
 #-------------------------------------------------------------------------------
  
 #Source path
@@ -43,7 +45,7 @@ INCLUDES += include
 
 #Linker script
 #-------------------------------------------------------------------------------
-LDSCRIPT   = STM32F103XB_FLASH.ld
+LDSCRIPT := STM32F103XB_FLASH.ld
 #-------------------------------------------------------------------------------
  
 #Linker config
