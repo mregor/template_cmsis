@@ -1,12 +1,5 @@
 #include "stm32f1xx.h"
-
-void delay(uint32_t msec)
-{
-    for (uint32_t j=0; j<2000UL*msec; j++)
-    {
-        __NOP();
-    }
-}
+#include "main.h"
 
 void main(void)
 {
@@ -17,5 +10,13 @@ void main(void)
         delay(100);
         GPIOC->BSRR |= GPIO_BSRR_BR13;
         delay(100); 
+    }
+}
+
+void delay(uint32_t msec)
+{
+    for (uint32_t j=0; j<2000UL*msec; j++)
+    {
+        __NOP();
     }
 }
