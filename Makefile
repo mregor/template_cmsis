@@ -6,10 +6,10 @@ TARGET := template_cmsis
 #-------------------------------------------------------------------------------
 AS := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-gcc
 CC := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-gcc
-LD := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-g++
+LD := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-gcc
 CP := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-objcopy
 SZ := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-size
-RM := rm
+RM := rm -rf
 CXX := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-g++
 #GDB = arm-none-eabi-gdb
 #OCD = openocd
