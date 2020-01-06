@@ -11,7 +11,7 @@ int main(void)
         GPIOC->BSRR |= GPIO_BSRR_BR13;
         delay(100); 
     }
-	return 0;
+	return 1;
 }
 
 void delay(uint32_t msec)
