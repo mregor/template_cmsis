@@ -1,7 +1,7 @@
 #include "stm32f1xx.h"
 #include "main.h"
 
-void main(void)
+int main(void)
 {
     RCC->APB2ENR |= RCC_APB2ENR_IOPCEN; //Включаем порт C
     GPIOC->CRH |= GPIO_CRH_MODE13_0;
@@ -11,6 +11,7 @@ void main(void)
         GPIOC->BSRR |= GPIO_BSRR_BR13;
         delay(100); 
     }
+	return 0;
 }
 
 void delay(uint32_t msec)

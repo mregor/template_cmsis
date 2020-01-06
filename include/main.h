@@ -1,5 +1,5 @@
-#ifndef __MAIN.H
-#define __MAIN.H
+#ifndef __MAIN_H 
+#define __MAIN_H 
 #endif
 
 void delay(uint32_t msec);

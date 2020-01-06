@@ -1,55 +1,106 @@
-PHONY: all clean flash debug
+# Имя проекта
+#-------------------------------------------------------------------------------
+TARGET  = template
 
-TARGET := template_cmsis
-
-#Toolchain
+# Инструменты
 #-------------------------------------------------------------------------------
 AS := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-gcc
 CC := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-gcc
 LD := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-gcc
 CP := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-objcopy
 SZ := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-size
-RM := rm -rf
-CXX := /home/egor/arm-tools/gcc-arm-none-eabi-8-2019-q3-update/bin/arm-none-eabi-g++
-#GDB = arm-none-eabi-gdb
-#OCD = openocd
-#-------------------------------------------------------------------------------
+RM := rm -f
 
-#GCC config
+# Пути к CMSIS, StdPeriph Lib
 #-------------------------------------------------------------------------------
-CFLAGS += -D_ROM=65536
-CFLAGS += -D_RAM=20480
-CFLAGS += -D_ROM_OFF=0x08000000
-CFLAGS += -D_RAM_OFF=0x20000000
-CFLAGS += -mcpu=cortex-m3
-CFLAGS += -mthumb
-CFLAGS += -DSTM32F1
-CFLAGS += -msoft-float
-#-------------------------------------------------------------------------------
+CMSIS_PATH = CMSIS
 
-#startup file
+# startup файл
 #-------------------------------------------------------------------------------
-STARTUP := startup_stm32f103xb.s
-#-------------------------------------------------------------------------------
- 
-#Source path
+STARTUP = $(CMSIS_PATH)/startup_stm32f103xb.s
+
+# Пути поиска исходных файлов
 #-------------------------------------------------------------------------------
 SOURCEDIRS := src
-#-------------------------------------------------------------------------------
- 
-#Header path
-#-------------------------------------------------------------------------------
-INCLUDES += inc
-INCLUDES += include
-#-------------------------------------------------------------------------------
+SOURCEDIRS += $(CMSIS_PATH)/src
 
-#Linker script
+# Пути поиска хидеров
 #-------------------------------------------------------------------------------
-LDSCRIPT := STM32F103XB_FLASH.ld
+INCLUDES += include
+INCLUDES += $(CMSIS_PATH)/include 
+
+
+# Настройки компилятора
 #-------------------------------------------------------------------------------
- 
-#Linker config
+CFLAGS += -mthumb -mcpu=cortex-m3 # архитектура и система комманд
+CFLAGS += -std=gnu99              # стандарт языка С
+CFLAGS += -Wall -pedantic         # Выводить все предупреждения
+CFLAGS += -Os                     # Оптимизация
+CFLAGS += -ggdb                   # Генерировать отладочную информацию для gdb
+CFLAGS += -fno-builtin
+
+CFLAGS += $(addprefix -I, $(INCLUDES))
+
+# Скрипт линкера
 #-------------------------------------------------------------------------------
-#LDFLAGS += -nostartfiles  -nostdlib -gc-sections -mthumb $(MCU)
-LDFLAGS += -T $(LDSCRIPT)
+LDSCR_PATH = $(CMSIS_PATH)
+LDSCRIPT   = STM32F103XB_FLASH.ld
+
+# Настройки линкера
 #-------------------------------------------------------------------------------
+LDFLAGS += -nostartfiles
+LDFLAGS += -T$(LDSCR_PATH)/$(LDSCRIPT)
+
+# Настройки ассемблера
+#-------------------------------------------------------------------------------
+#AFLAGS += -ahls -mapcs-32
+
+# Список объектных файлов
+#-------------------------------------------------------------------------------
+OBJS += $(patsubst %.c, %.o, $(wildcard  $(addsuffix /*.c, $(SOURCEDIRS))))
+OBJS += $(patsubst %.s, %.o, $(STARTUP))
+
+# Список файлов к удалению командой "make clean"
+#-------------------------------------------------------------------------------
+TOREMOVE += *.elf *.hex
+TOREMOVE += $(addsuffix /*.o, $(SOURCEDIRS))
+TOREMOVE += $(addsuffix /*.d, $(SOURCEDIRS))
+TOREMOVE += $(patsubst %.s, %.o, $(STARTUP))
+TOREMOVE += $(TARGET)
+
+# Собрать все
+#-------------------------------------------------------------------------------
+all: $(TARGET).hex size 
+
+# Очистка
+#-------------------------------------------------------------------------------
+clean:
+	@$(RM) -f $(TOREMOVE)  
+
+# Создание .hex файла
+#-------------------------------------------------------------------------------
+$(TARGET).hex: $(TARGET).elf
+	@$(CP) -Oihex $(TARGET).elf $(TARGET).hex
+        
+# Показываем размер
+#-------------------------------------------------------------------------------
+size:
+	@echo "---------------------------------------------------"
+	@$(SZ) $(TARGET).elf
+
+# Линковка
+#------------------------------------------------------------------------------- 
+$(TARGET).elf: $(OBJS)
+	@$(LD) $(LDFLAGS) $^ -o $@
+
+# Компиляция
+#------------------------------------------------------------------------------- 
+%.o: %.c
+	@$(CC) $(CFLAGS) -MD -c $< -o $@
+        
+%.o: %.s
+	@$(AS) $(CFLAGS) -c $< -o $@
+
+# Сгенерированные gcc зависимости
+#-------------------------------------------------------------------------------
+include $(wildcart *.d)
