@@ -5,6 +5,9 @@
 			"label": "Make Build",
 			"type": "shell",
 			"command": "make all",
+			"problemMatcher": [
+				"$gcc"
+			],
 			"options": {
 				"cwd": "${workspaceRoot}"
         	}, 
