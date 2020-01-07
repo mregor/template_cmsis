@@ -1,4 +1,4 @@
-#include "stm32f1xx.h"
+#include "stm32f10x.h"
 #include "main.h"
 
 int main(void)
@@ -16,7 +16,7 @@ int main(void)
 
 void delay(uint32_t msec)
 {
-    for (uint32_t j=0; j<2000UL*msec; j++)
+    for (uint32_t j=0; j<20000UL*msec; j++)
     {
         __NOP();
     }
