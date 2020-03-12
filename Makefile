@@ -4,7 +4,7 @@ TARGET  = template
 ARM_TOOLS_PATH = /home/egor/arm-tools/gcc-arm-none-eabi/bin
 # Инструменты
 #-------------------------------------------------------------------------------
-AS := $(ARM_TOOLS_PATH)/bin/arm-none-eabi-gcc
+AS := $(ARM_TOOLS_PATH)/arm-none-eabi-gcc
 CC := $(ARM_TOOLS_PATH)/arm-none-eabi-gcc
 LD := $(ARM_TOOLS_PATH)/arm-none-eabi-gcc
 CP := $(ARM_TOOLS_PATH)/arm-none-eabi-objcopy
